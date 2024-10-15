@@ -25,7 +25,7 @@ for i in "${!LR_MAX_VALUES[@]}"; do
     LOG_FILE=${LOG_FILES[$i]}
 
     # Run the Python script with the current hyperparameters and assign to the specified CUDA device
-    CUDA_VISIBLE_DEVICES=$CUDA_DEVICE nohup python3 hp_tune.py \
+    CUDA_VISIBLE_DEVICES=$CUDA_DEVICE nohup python3 tune.py \
         --lr_max $LR_MAX \
         --lr_min $LR_MIN \
         --num_training_steps $NUM_TRAINING_STEPS \

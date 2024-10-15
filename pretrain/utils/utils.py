@@ -7,42 +7,59 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import math
-
+import random
 
 
 def init_model():
     
     
-
     model = MambaLMHeadModel.from_pretrained (pretrained_model_name="state-spaces/mamba2-130m")
+    tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba2-130m")
+    config = AutoConfig.from_pretrained("state-spaces/mamba2-130m")
+    print("Config of mamba2-130m")
+    print(config)
+    
+    model = MambaLMHeadModel.from_pretrained (pretrained_model_name="state-spaces/mamba2-2.7b")
     tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba-2.8b-hf")
-    config = AutoConfig.from_pretrained("state-spaces/mamba-2.8b-hf")
+    config = AutoConfig.from_pretrained("state-spaces/mamba2-2.7b")
+    print("Config of mamba2-2.7b")
     print(config)
 
 
 
 
-def model_training(params = {"lr": 5e-5, "num_training_steps": 30, "weight_decay": 0.1}, device = torch.device("cpu")):
-    
+def model_training(
+    model_name = "mamba2-130m",
+    model = MambaLMHeadModel.from_pretrained (pretrained_model_name="state-spaces/mamba2-130m"),
+    tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba-2.8b-hf"),
+    params = {"lr": 5e-5, "num_training_steps": 30, "weight_decay": 0.1},
+    device = torch.device("cpu")
+    ):
+        
    
     # load model
-    model = MambaLMHeadModel.from_pretrained (pretrained_model_name="state-spaces/mamba2-130m")
-    tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba-2.8b-hf")
-
     model.to(device)
     
     # load parameters
     lr = params["lr"]
     num_training_steps = params["num_training_steps"]
     weight_decay = params["weight_decay"]
-    print(f"Training with parameters: {params}")
+    print(f"Training {model_name} with parameters: {params}")
     
-    tokenized_datasets = load_from_disk("tokenized_pubmed_abstract_512")
+    tokenized_datasets = load_from_disk("data/mamba2_tokenized_pubmed_abstract_512")
     train_data = tokenized_datasets['train']
     test_data = tokenized_datasets['test']
     
     scaler = GradScaler()
-    batch_size = 32  # Adjust based on your GPU memory
+    if model_name == "mamba2-130m":
+        batch_size = 32
+    elif model_name == "mamba2-2.7b":
+        batch_size = 1
+    else:
+        print("Invalid model name")
+        return
+    #batch_size = 32  # Adjust based on your GPU memory
+        
     accumulation_steps = 8  # Increase the batch size by accumulation_steps
     print(f"Actual batch size: {batch_size * accumulation_steps}")
 
@@ -134,8 +151,14 @@ def model_training(params = {"lr": 5e-5, "num_training_steps": 30, "weight_decay
                         print(f"Test loss: {test_loss / test_idx}")
                     model.train()
                     
-    model.save_pretrained("../checkpoints/biomamba2-130m")
-    tokenizer.save_pretrained("../checkpoints/biomamba2-130m")
+    if model_name == "mamba2-130m":
+        model.save_pretrained("checkpoints/biomamba2-130m")
+        tokenizer.save_pretrained("checkpoints/biomamba2-130m")
+    elif model_name == "mamba2-2.7b":
+        model.save_pretrained("checkpoints/biomamba2-2.7b")
+        tokenizer.save_pretrained("checkpoints/biomamba2-2.7b")
+    else:
+        print("Invalid model name")
     
 
     
@@ -149,15 +172,18 @@ def model_training(params = {"lr": 5e-5, "num_training_steps": 30, "weight_decay
 def eval(model, tokenizer, device = torch.device("cpu")):
     
     print("Evaluating the model")
-    import random
+
     
     
     model.to(device)
     
-    test_dataset = load_from_disk('pubmed_abstract')['test']
+    test_dataset = load_from_disk('data/mamba2_tokenized_pubmed_abstract_512')['test']
     test_dataset = test_dataset.rename_column('abstract', 'text')
     
-    num_samples = 500  ### 5000
+    # less samples for faster evaluation
+    num_samples = 500
+
+        
     random.seed(0)
 
     # Randomly sample the indices
