@@ -9,6 +9,8 @@ BioMamba is a pre-trained Mamba architecture model specifically designed for the
 
 ## Project Status
 
+For this draft version of the project, please follow the instructions in pretrain/readme.md to run the pretrain script step by step
+
 This project is currently under development. The pretraining code, larger model versions, and more detailed experiments will be made publicly available as soon as possible. 
 
 Stay tuned for updates!
