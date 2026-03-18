@@ -56,7 +56,7 @@ training13b.json
 Thumbs.db
 
 # ── Legacy code (v1, kept for reference) ─────────────────────────
-# legacy/ is tracked — it contains early-version pretrain & task code
+# legacy/ is tracked
 
 # ── Migration script (one-time use) ──────────────────────────────
 _migrate.py
