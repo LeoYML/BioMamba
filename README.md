@@ -156,13 +156,17 @@ All BioMamba variants use the [GPT-NeoX tokenizer](https://huggingface.co/Eleuth
 ## Citation
 
 ```bibtex
-@article{biomamba2025,
-  title={BioMamba: Domain-Adaptive Biomedical Language Models},
-  author={Yue, Ling and Zhu, Mingzhi and Xing, Sixue and Pan, Shaowu and Chenthamarakshan, Vijil and Wang, Yanbo and Cao, Yunning and Das, Payel and Fu, Tianfan},
-  year={2025}
+@article{yue2024biomamba,
+      title={BioMamba: Domain-Adaptive Biomedical Language Models}, 
+      author={Yue, Ling and Zhu, Mingzhi and Xing, Sixue and Pan, Shaowu and Chenthamarakshan, Vijil and Wang, Yanbo and Cao, Yunning and Das, Payel and Fu, Tianfan},
+      year={2024},
+      eprint={2408.02600},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2408.02600}, 
 }
 ```
 
 ## License
 
-This project is released for academic research purposes.
+This project is released under MIT License.
