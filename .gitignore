@@ -17,6 +17,10 @@ data/
 checkpoints/
 evaluation_results/
 
+# ── Docs (keep pipeline figure, exclude result reports) ──────────
+docs/*.md
+docs/*.pdf
+
 # ── Training logs ──────────────────────────────────────────────────
 runs/
 wandb/

@@ -4,6 +4,12 @@ This repository contains the training, evaluation, and analysis code for **BioMa
 
 BioMamba covers five model scales (130M, 370M, 780M, 1.3B, 2.7B parameters) and is evaluated on biomedical question answering (PubMedQA, BioASQ), clinical note completion, and discharge summary generation (MIMIC-IV).
 
+## Pipeline
+
+<p align="center">
+  <img src="docs/biomamba_pipeline.png" alt="BioMamba Pipeline" width="100%">
+</p>
+
 ## Repository Structure
 
 ```
