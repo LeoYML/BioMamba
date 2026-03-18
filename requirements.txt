@@ -1,0 +1,24 @@
+# Core dependencies for Mamba2 training on PubMed-MEDLINE
+torch>=2.0.0
+transformers==4.44.2  # Fixed version for compatibility with PyTorch 2.5+
+datasets>=2.14.0
+mamba-ssm>=2.0.0
+
+# Training utilities
+tensorboard>=2.14.0
+tqdm>=4.65.0
+
+# Optional but recommended
+accelerate>=0.24.0
+wandb>=0.15.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# For better performance
+triton>=2.0.0
+
+# Additional utilities
+huggingface-hub>=0.23.0
+tokenizers>=0.19.0,<0.20.0

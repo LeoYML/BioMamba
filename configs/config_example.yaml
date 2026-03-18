@@ -1,0 +1,111 @@
+# Example configuration file for Mamba2 training
+# You can use this as a template for your own experiments
+
+# Model configuration
+model:
+  name: "mamba2-130m"  # Options: mamba2-130m, mamba2-370m, mamba2-780m, mamba2-1.3b, mamba2-2.7b
+  path: null  # Set to checkpoint path to continue training
+
+# Data configuration
+data:
+  data_dir: " /data/BioMamba/mamba2/data"
+  max_length: 512
+  use_title: true
+  test_size: 0.1
+  num_proc: 16
+  reprocess_data: false
+
+# Training configuration
+training:
+  # Batch size settings
+  batch_size: null  # Will be auto-determined based on model size
+  accumulation_steps: 8
+  
+  # Optimization
+  lr: 3.0e-5
+  weight_decay: 0.1
+  max_grad_norm: 1.0
+  
+  # Schedule
+  num_epochs: 3
+  num_training_steps: null  # Override num_epochs if set
+  warmup_ratio: 0.1
+  scheduler: "linear"  # Options: linear, cosine
+  
+  # Mixed precision
+  fp16: true
+
+# Logging and evaluation
+logging:
+  output_dir: "./checkpoints"
+  log_dir: "./runs"
+  logging_steps: 100
+  eval_steps: 1000
+  save_steps: 2000
+  eval_samples: 100
+
+# Hardware
+hardware:
+  device: "cuda"
+  gpu_id: 0
+
+# Reproducibility
+seed: 42
+
+---
+# Configuration for small-scale experiments (quick testing)
+name: "quick_test"
+model:
+  name: "mamba2-130m"
+data:
+  max_length: 256
+  test_size: 0.2
+training:
+  num_epochs: 1
+  batch_size: 32
+  accumulation_steps: 4
+  lr: 5.0e-5
+logging:
+  eval_steps: 500
+  save_steps: 1000
+
+---
+# Configuration for production training (full dataset)
+name: "production"
+model:
+  name: "mamba2-780m"
+data:
+  max_length: 512
+  test_size: 0.05  # Use more data for training
+  num_proc: 32
+training:
+  num_epochs: 5
+  batch_size: 8
+  accumulation_steps: 16
+  lr: 2.0e-5
+  scheduler: "cosine"
+  weight_decay: 0.1
+logging:
+  eval_steps: 500
+  save_steps: 1000
+  eval_samples: 200
+
+---
+# Configuration for large model (2.7B)
+name: "large_model"
+model:
+  name: "mamba2-2.7b"
+data:
+  max_length: 512
+training:
+  num_epochs: 2
+  batch_size: 1
+  accumulation_steps: 32
+  lr: 1.5e-5
+  scheduler: "cosine"
+  warmup_ratio: 0.15
+logging:
+  logging_steps: 50
+  eval_steps: 500
+  save_steps: 1000
+  eval_samples: 50
