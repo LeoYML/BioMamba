@@ -63,3 +63,6 @@ _migrate.py
 
 # ── Paper PDF (tracked separately) ───────────────────────────────
 BioMamba.pdf
+
+# ── Rebuttal materials (not tracked) ─────────────────────────────
+rebuttal/
